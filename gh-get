@@ -1,5 +1,46 @@
 #!/usr/bin/env bash
 set -e
 
-exec ghq get "$@"
+function print_help() {
+    echo "Usage: $0 <repo>"
+}
 
+while [ $# -gt 0 ]; do
+  case "$1" in
+  -h|--help)
+    print_help
+    exit 0
+    ;;
+  *) REPO_URL="$1"
+    ;;
+  esac
+  shift
+done
+
+if [[ -z "$REPO_URL" ]]; then
+    print_help
+    exit 1
+fi
+
+ROOT=$(git config --get gh-get.root)
+
+
+if [[ $REPO_URL =~ ^[a-zA-Z0-9_-]+$ ]]; then # repo
+    REPO=$(gh api user --jq .login)/$REPO_URL
+elif [[ $REPO_URL =~ ^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then # owner/repo
+    REPO=$REPO_URL
+elif [[ $REPO_URL =~ ^github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then # github.com/owner/repo
+    REPO=$(cut -d/ -f2- <<< "$REPO_URL")
+elif [[ $REPO_URL =~ ^http://github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then # https://github.com/owner/repo
+    REPO=$(cut -d/ -f4- <<< "$REPO_URL")
+else
+    echo "Invalid repo format: $REPO_URL" > /dev/stderr
+    print_help
+    exit 1
+fi
+
+DEST=$ROOT/github.com/$REPO
+gh repo clone "$REPO" "$DEST"
+
+# Ouput the path to the repo local dir.
+printf "%s" "$DEST"
