@@ -24,7 +24,7 @@ fi
 
 ROOT=$(git config --get gh-get.root || true)
 if [[ -z "$ROOT" ]]; then
-    echo "gh-get.root is not set. Please update your git config."
+    echo "Root Directory is not set! Please run 'git config --global gh-get.root <path>'."
     exit 1
 fi
 
