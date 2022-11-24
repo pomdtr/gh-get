@@ -22,8 +22,13 @@ if [[ -z "$REPO_URL" ]]; then
     exit 1
 fi
 
-ROOT=$(git config --get gh-get.root)
+ROOT=$(git config --get gh-get.root || true)
+if [[ -z "$ROOT" ]]; then
+    echo "gh-get.root is not set. Please update your git config."
+    exit 1
+fi
 
+ROOT="${ROOT/#\~/$HOME}"
 
 if [[ $REPO_URL =~ ^[a-zA-Z0-9_-]+$ ]]; then # repo
     REPO=$(gh api user --jq .login)/$REPO_URL
