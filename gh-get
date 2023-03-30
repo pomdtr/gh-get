@@ -38,6 +38,8 @@ elif [[ $REPO_URL =~ ^github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then # gith
     REPO=$(cut -d/ -f2- <<< "$REPO_URL")
 elif [[ $REPO_URL =~ ^https://github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then # https://github.com/owner/repo
     REPO=$(cut -d/ -f4- <<< "$REPO_URL")
+elif [[ $REPO_URL =~ ^https://github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.git$ ]]; then # https://github.com/owner/repo.git
+    REPO=$(cut -d/ -f4- <<< "$REPO_URL")
 else
     echo "Invalid repo format: $REPO_URL" > /dev/stderr
     print_help
