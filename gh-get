@@ -46,7 +46,7 @@ else
     exit 1
 fi
 
-DEST=$ROOT/github.com/$REPO
+DEST=$ROOT/$REPO
 gh repo clone "$REPO" "$DEST"
 
 # Ouput the path to the repo local dir.
