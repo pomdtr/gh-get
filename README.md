@@ -3,6 +3,6 @@
 ```sh
 gh extrension install pomdtr/gh-get
 git config --global gh-get.root ~/Developer
-gh get https://github.com/pomdtr/sunbeam
-# Runs `git clone https://github.com/pomdtr/sunbeam ~/Developer/github.com/pomdtr/sunbeam`
+gh get pomdtr/sunbeam
+# Equivalent to `git clone https://github.com/pomdtr/sunbeam ~/Developer/pomdtr/sunbeam`
 ```
